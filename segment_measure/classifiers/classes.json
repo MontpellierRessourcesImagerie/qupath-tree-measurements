@@ -1,0 +1,88 @@
+{
+  "pathClasses": [
+    {
+      "name": "Tumor",
+      "color": -3670016
+    },
+    {
+      "name": "Stroma",
+      "color": -6895466
+    },
+    {
+      "name": "Immune cells",
+      "color": -6268256
+    },
+    {
+      "name": "Necrosis",
+      "color": -13487566
+    },
+    {
+      "name": "Other",
+      "color": -14336
+    },
+    {
+      "name": "Region*",
+      "color": -16777036
+    },
+    {
+      "name": "Ignore*",
+      "color": -4934476
+    },
+    {
+      "name": "Positive",
+      "color": -377282
+    },
+    {
+      "name": "Negative",
+      "color": -9408287
+    },
+    {
+      "name": "Tissue",
+      "color": -11325665
+    },
+    {
+      "name": "Background",
+      "color": -16777216
+    },
+    {
+      "name": "Adipose",
+      "color": -967888
+    },
+    {
+      "name": "Pour training *",
+      "color": -10849034
+    },
+    {
+      "name": "Fibrose",
+      "color": -16711936
+    },
+    {
+      "name": "Epiderme",
+      "color": -16711681
+    },
+    {
+      "name": "Derme",
+      "color": -16054275
+    },
+    {
+      "name": "Muscle",
+      "color": -12922735
+    },
+    {
+      "name": "Lypo",
+      "color": -256
+    },
+    {
+      "name": "F_pilleux",
+      "color": -65536
+    },
+    {
+      "name": "Ki67+",
+      "color": -604221
+    },
+    {
+      "name": "Caspase+",
+      "color": -11562449
+    }
+  ]
+}
