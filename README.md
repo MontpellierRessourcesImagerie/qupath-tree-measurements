@@ -1,10 +1,10 @@
 # Segment, measure and analyze nuclei
 
 Before starting, you must:
-    - Download locally the content of this repository.
-    - Download the [models used by StarDist](https://github.com/qupath/models/tree/main/stardist)
-    - Download and install the [StarDist extension for QuPath](https://github.com/qupath/qupath-extension-stardist/releases)
-    - Download and install [Miniconda](https://repo.anaconda.com/miniconda/)
+- Download locally the content of this repository.
+- Download the [models used by StarDist](https://github.com/qupath/models/tree/main/stardist)
+- Download and install the [StarDist extension for QuPath](https://github.com/qupath/qupath-extension-stardist/releases)
+- Download and install [Miniconda](https://repo.anaconda.com/miniconda/)
 
 ## I. In QuPath
 
