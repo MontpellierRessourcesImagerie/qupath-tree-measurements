@@ -143,7 +143,7 @@ Before starting, you must:
 | Cell: Ki67: Median | Ki67 intensity | 0.333, 0.666 | 1     |
 | Cell: HES1: Median | HES1 intensity | 0.333, 0.666 | 2     |
 
-
+<img width="3600" height="2000" alt="diagram-david" src="https://github.com/user-attachments/assets/64bedee7-906f-4f4d-b602-0cd6952e1e8d" />
 
 - Each measurable is assigned to a level in the tree (ex: Ki67 -> 1, HES1 -> 2, ...)
 - For each "measurable", the number of sub-branches that will be created depends on the number of milestones.
