@@ -114,6 +114,9 @@ Before starting, you must:
 - Drag and drop the `analyze/gui.py` script in the terminal.
 - You can now launch the command and a new window should appear.
 
+<img width="567" height="879" alt="Screenshot from 2026-04-27 13-33-05" src="https://github.com/user-attachments/assets/bc1d0a31-2c3d-4e49-83d3-9dce941a50e7" />
+
+
 ### 2. Fill the settings
 
 - Click the `Choose CSV/TSV` button and in the file selector, indicate the TSV that you just produced using QuPath.
