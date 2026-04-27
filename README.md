@@ -1,10 +1,10 @@
 # Segment, measure and analyze nuclei
 
 Before starting, you must:
-    - Download locally the content of this repository.
-    - Download the [models used by StarDist](https://github.com/qupath/models/tree/main/stardist)
-    - Download and install the [StarDist extension for QuPath](https://github.com/qupath/qupath-extension-stardist/releases)
-    - Download and install [Miniconda](https://repo.anaconda.com/miniconda/)
+- Download locally the content of this repository.
+- Download the [models used by StarDist](https://github.com/qupath/models/tree/main/stardist)
+- Download and install the [StarDist extension for QuPath](https://github.com/qupath/qupath-extension-stardist/releases)
+- Download and install [Miniconda](https://repo.anaconda.com/miniconda/)
 
 ## I. In QuPath
 
@@ -159,3 +159,6 @@ Before starting, you must:
 - Intensities corresponding to each milestones are processed on the images that you declare as references in the "Reference images" box.
 - On top of the global statistics, we create a file for each image corresponding the raw values.
 - In the summary TSV, such measures are exported as: `Median (Area): [Area: (0%-25%) ∩ Ki67: (0%-33%)]` which is the median value of the 'Area' property for the cells that are in the lower 25% of area and in the lower 33% of Ki67 intensity.
+
+<img width="3600" height="2000" alt="diagram-david" src="https://github.com/user-attachments/assets/64bedee7-906f-4f4d-b602-0cd6952e1e8d" />
+
