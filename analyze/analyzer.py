@@ -12,6 +12,7 @@ class MeasuresTree(object):
         self.flat_list = self.get_flat_measurables()
         self.current = [0 for _ in range(len(self.flat_list))] # [index measurable] = index milestone for this measurable
         self.upper_bound = self.make_upper_bound() # [index measurable] = number of milestones for this measurable
+        self.excluded = set() # set of classes to remove from the data after classes extraction.
 
     def next(self):
         rank = len(self.current) - 1
@@ -112,8 +113,6 @@ class CellsSignalAnalyzer(object):
     def format_classification(self):
         for clf in self.classifications:
             self.data[clf] = 0
-        for clf in self.classifications:
-            self.data[clf] = 0
             self.data.loc[self.data['Classification'] == clf, clf] = 1
         self.data.drop(columns=['Classification'], inplace=True)
 
@@ -166,13 +165,14 @@ class CellsSignalAnalyzer(object):
                 for name, column, (start, end) in properties:
                     low, high = self.thresholds[as_key(name, start, end)]
                     filtered_data = filtered_data.loc[(filtered_data[column] >= low) & (filtered_data[column] < high)]
-                column = properties[0][1]
                 row[f"Num {tsv_key}"] = len(filtered_data)
-                row[f"Mean: {tsv_key}"] = np.mean(filtered_data[column].values)
-                row[f"Median: {tsv_key}"] = np.median(filtered_data[column].values)
-                row[f"StdDev: {tsv_key}"] = np.std(filtered_data[column].values)
+                for ppt in properties:
+                    name, column, _ = ppt
+                    row[f"Mean ({name}): {tsv_key}"] = np.mean(filtered_data[column].values)
+                    row[f"Median ({name}): {tsv_key}"] = np.median(filtered_data[column].values)
+                    row[f"StdDev ({name}): {tsv_key}"] = np.std(filtered_data[column].values)
+                    self.raw_values[image][name + ": " + tsv_key] = filtered_data[column].values
                 rows.append(row)
-                self.raw_values[image][tsv_key] = filtered_data[column].values
                 if not mt.next():
                     break
         return rows
@@ -208,11 +208,25 @@ class CellsSignalAnalyzer(object):
                 start = end
         pprint(self.thresholds)
 
+    def set_exclusions(self, classes_to_exclude):
+        self.excluded = set(classes_to_exclude)
+
+    def exclude(self):
+        for c in self.excluded:
+            if c not in self.classifications:
+                raise ValueError(f"Class '{c}' not found in the classifications.")
+            self.data = self.data.loc[self.data[c] == 0]
+            self.data.drop(columns=[c], inplace=True)
+        self.classifications = set([c for c in self.classifications if c not in self.excluded])
+
 if __name__ == "__main__":
     # 1. Classification
     analyzer = CellsSignalAnalyzer("/home/clement/Documents/projects/2285-dbracquemond/pjt1/measurements.tsv")
     analyzer.detect_classifications()
     analyzer.format_classification()
+
+    analyzer.set_exclusions(["Caspase+"])
+    analyzer.exclude()
 
     # 2. Measure intensities
     analyzer.add_measurable(

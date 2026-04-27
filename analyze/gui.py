@@ -2,7 +2,7 @@ from qtpy.QtWidgets import (
     QWidget, QPushButton, QLabel, QLineEdit, 
     QCheckBox, QSpinBox, QFileDialog, QVBoxLayout, 
     QGridLayout, QHBoxLayout, QScrollArea,
-    QMessageBox
+    QMessageBox, QGroupBox
 )
 from qtpy.QtCore import Qt
 from analyzer import CellsSignalAnalyzer
@@ -38,12 +38,23 @@ class MetricsWindow(QWidget):
         main_layout.addSpacing(15)
 
         # -------------------------------------------------
+        # Selector for excluded classes
+        # -------------------------------------------------
+
+        self.excluded_classes_scroll_area = QScrollArea()
+        self.excluded_classes_scroll_area.setWidgetResizable(True)
+        self.excluded_classes_container = QGroupBox("Excluded classes")
+        self.excluded_classes_layout = QVBoxLayout(self.excluded_classes_container)
+        self.excluded_classes_scroll_area.setWidget(self.excluded_classes_container)
+        main_layout.addWidget(self.excluded_classes_scroll_area, stretch=1)
+
+        # -------------------------------------------------
         # Metrics grid (with headers)
         # -------------------------------------------------
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
 
-        self.metrics_container = QWidget()
+        self.metrics_container = QGroupBox("Available metrics")
         self.metrics_grid = QGridLayout(self.metrics_container)
         self.metrics_grid.setColumnStretch(0, 0)  # checkbox
         self.metrics_grid.setColumnStretch(1, 2)  # metric name
@@ -66,11 +77,10 @@ class MetricsWindow(QWidget):
         # -------------------------------------------------
         # Selector for reference images
         # -------------------------------------------------
-
         self.references_scroll_area = QScrollArea()
         self.references_scroll_area.setWidgetResizable(True)
 
-        self.references_container = QWidget()
+        self.references_container = QGroupBox("Reference images")
         self.references_layout = QVBoxLayout(self.references_container)
 
         self.references_scroll_area.setWidget(self.references_container)
@@ -120,6 +130,22 @@ class MetricsWindow(QWidget):
             if isinstance(widget, QCheckBox) and widget.isChecked():
                 images.append(widget.text())
         return images
+    
+    def refresh_excluded_classes(self):
+        if not self.analyzer:
+            return
+        classes = self.analyzer.get_classifications()
+        # Clear existing widgets
+        for i in reversed(range(self.excluded_classes_layout.count())):
+            item = self.excluded_classes_layout.itemAt(i)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+        if not classes:
+            return
+        for cls in classes:
+            checkbox = QCheckBox(cls)
+            self.excluded_classes_layout.addWidget(checkbox)
 
     def refresh_metrics_list(self, metrics=None):
         """
@@ -234,6 +260,7 @@ class MetricsWindow(QWidget):
             self.analyzer.get_columns()
         )
         self.update_reference_images()
+        self.refresh_excluded_classes()
         self.label_info.setText(f"File: {os.path.basename(path)} | Found classes: {', '.join(self.analyzer.get_classifications())}")
 
     def _choose_folder(self):
@@ -253,6 +280,15 @@ class MetricsWindow(QWidget):
         if self.output_folder is None:
             print("--- No output folder selected. ---")
             return
+        
+        excluded_classes = []
+        for i in range(self.excluded_classes_layout.count()):
+            item = self.excluded_classes_layout.itemAt(i)
+            widget = item.widget()
+            if isinstance(widget, QCheckBox) and widget.isChecked():
+                excluded_classes.append(widget.text())
+        self.analyzer.set_exclusions(excluded_classes)
+        self.analyzer.exclude()
         
         metrics_state = self.get_metrics_state()
         for metric in metrics_state:

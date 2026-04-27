@@ -120,18 +120,29 @@ Before starting, you must:
 - Right below the button, the binary classes found in the file should show up (e.g. "Caspase+", "Ki67+", ...).
 - The list of measurable metrics should also show up in the first box and the list of images should be in the second box.
 
-#### a. For classifiables
+#### a. Excluded classes
 
-- For each classification (e.g. "Caspase+", ...), we must have:
+- Some classified objects must not be taken into account in what is being counted or measured (ex: Caspase+).
+- If in the first box ("Excluded classes") you check some classes, the cells and the measurements belonging to these classes will be discarded.
+- The total number of cells is affected by this action.
+- In the following section, the cells belonging to **these classes don't exist anymore**.
+
+#### b. Count & measure classifiables
+
+- For each non-excluded classification (e.g. "Ki67+", ...), we must have:
     - The number of objects having this class.
     - Mean [measurable] (for each measurable chosen in the first box (e.g. Ki67, HES1, ...))
     - Median [measurable]
     - StdDev [measurable]
-- We also need these same metrics for cell having no classification that we denotate as "∅".
+- We also need these same metrics for cell having no classification that we refer to as "∅".
+- In the final TSV, such metrics are present under the form:
+    - `Num ∅` == Number of unclassfied cells (cells negative to every class).
+    - `Mean: [Area] (∅)` == Mean of the 'Area' property for the unclassified cells.
+    - `Mean: [HES] (Ki67+)` == Mean of the 'HES' property for the only for the cells classified Ki67+. 
 
-#### b. For measurables
+#### c. Tree of measurables
 
-- You start by selecting a set of measurable properties in the proposed list. For each of them, you have to provide:
+- You start by selecting a set of measurable properties in the "Available metrics" list. For each of them, you have to provide:
     - `Alias`: The name that it will have in the results table.
     - `Milestones`: At what percentages should we cut the list of values for this metric.
     - `Level`: To which level of the tree will correspond this value.
@@ -143,9 +154,8 @@ Before starting, you must:
 | Cell: Ki67: Median | Ki67 intensity | 0.333, 0.666 | 1     |
 | Cell: HES1: Median | HES1 intensity | 0.333, 0.666 | 2     |
 
-
-
-- Each measurable is assigned to a level in the tree (ex: Ki67 -> 1, HES1 -> 2, ...)
-- For each "measurable", the number of sub-branches that will be created depends on the number of milestones.
-- Intensities corresponding to each milestones are processed on the images that you declare as references in the second box.
+- Each measurable is assigned to a level in the tree (ex: Nuclei area -> 0, Ki67 -> 1, HES1 -> 2, ...)
+- For each "measurable", the number of sub-branches that will be created depends on the number of milestones. For example, if the milestones are "0.333, 0.666", the different sets will be: (0%, 33%(, (33%, 66%(, (66%, 100%) which implies the creation of 3 sub-branches for this property.
+- Intensities corresponding to each milestones are processed on the images that you declare as references in the "Reference images" box.
 - On top of the global statistics, we create a file for each image corresponding the raw values.
+- In the summary TSV, such measures are exported as: `Median (Area): [Area: (0%-25%) ∩ Ki67: (0%-33%)]` which is the median value of the 'Area' property for the cells that are in the lower 25% of area and in the lower 33% of Ki67 intensity.
