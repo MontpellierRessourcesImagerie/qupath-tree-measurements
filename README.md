@@ -27,9 +27,9 @@ Before starting, you must:
 | `input_class`        | We will search nuclei and measure them in every annotation having this class.                                            |
 | `use_present`        | If `true` we will work on the annotations already made. Otherwise, we will make a new annotation taking the whole image. |
 | `channel_1`          | If you go in ◑, what object contains the first channel.                                                                  |
-| `channel_1`          | If you go in ◑, what object contains the second channel.                                                                 |
-| `channel_1`          | If you go in ◑, what object contains the third channel.                                                                  |
-| `channel_1`          | If you go in ◑, what object contains the fourth channel.                                                                 |
+| `channel_2`          | If you go in ◑, what object contains the second channel.                                                                 |
+| `channel_3`          | If you go in ◑, what object contains the third channel.                                                                  |
+| `channel_4`          | If you go in ◑, what object contains the fourth channel.                                                                 |
 | `LUTs`               | If you prefer your channels to have a given color, you can give a RGB value here.                                        |
 | `model_path`         | Path to `dsb2018_heavy_augment.pb` in the StarDist models that you downloaded.                                           |
 | `expansion_distance` | How far the nuclei will be expanded to inspect the direct context.                                                       |
