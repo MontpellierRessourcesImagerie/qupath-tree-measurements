@@ -117,7 +117,7 @@ Before starting, you must:
 <img width="567" height="879" alt="Screenshot from 2026-04-27 13-33-05" src="https://github.com/user-attachments/assets/bc1d0a31-2c3d-4e49-83d3-9dce941a50e7" />
 
 
-### 2. Fill the settings
+### 2. Fill in the settings
 
 - Click the `Choose CSV/TSV` button and in the file selector, indicate the TSV that you just produced using QuPath.
 - Right below the button, the binary classes found in the file should show up (e.g. "Caspase+", "Ki67+", ...).
