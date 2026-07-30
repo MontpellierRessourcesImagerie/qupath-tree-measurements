@@ -176,8 +176,8 @@ class MetricsWindow(QWidget):
             level.setEnabled(False)
             
             checkbox.stateChanged.connect(
-                            lambda state, lbl=label, al=alias_edit, ms=milestones_edit, lv=level: 
-                            self._on_checkbox_changed(state, lbl, al, ms, lv)
+                            lambda state, cb=checkbox, lbl=label, al=alias_edit, ms=milestones_edit, lv=level: 
+                            self._on_checkbox_changed(state, cb, lbl, al, ms, lv)
                         )
             
             milestones_edit.setPlaceholderText("e.g., 0.25, 0.5, 0.75")
@@ -193,11 +193,11 @@ class MetricsWindow(QWidget):
                 (checkbox, label, alias_edit, milestones_edit, level)
             )
     
-    def _on_checkbox_changed(self, state, label, alias_edit, milestones_edit, level):
+    def _on_checkbox_changed(self, state, checkbox, label, alias_edit, milestones_edit, level):
         """
         Enable/disable alias and milestones edits based on checkbox state.
         """
-        enabled = state == Qt.Checked
+        enabled = checkbox.isChecked()
         label.setEnabled(enabled)
         alias_edit.setEnabled(enabled)
         milestones_edit.setEnabled(enabled)

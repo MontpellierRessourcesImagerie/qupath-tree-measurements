@@ -58,7 +58,7 @@ class CellsSignalAnalyzer(object):
         # Path of the TSV produced by QuPath's "Export measurements" function
         self.data_path = Path(data_path)
         # Content of QuPath's TSV file as a pandas DataFrame
-        self.data = pd.read_csv(self.data_path, sep="\t")
+        self.data = pd.read_csv(self.data_path, sep=";")
         # List of mono-classification found in the TSV, multi-classifications are dumped.
         self.classifications = set()
         # Filled by make_summary() with the summary statistics of the analysis, one row per image.
@@ -152,9 +152,12 @@ class CellsSignalAnalyzer(object):
     def summarize_measurables(self):
         rows = []
         self.raw_values = {}
+        # dump_folder = Path("/home/clement/Documents/projects/2285-dbracquemond/2026-06-16-debug/transfer_13000978_files_9339af64/dump/trace")
         for image in self.get_images():
             mt = MeasuresTree(self.measurables)
+            # self.data.to_csv(dump_folder / f"global-{image}.csv", sep=";", index=False)
             image_data = self.data.loc[self.data['Image'] == image]
+            # image_data.to_csv(dump_folder / f"image-{image}.csv", sep=";", index=False)
             row = {}
             self.raw_values[image] = {}
             while True:
@@ -172,9 +175,9 @@ class CellsSignalAnalyzer(object):
                     row[f"Median ({name}): {tsv_key}"] = np.median(filtered_data[column].values)
                     row[f"StdDev ({name}): {tsv_key}"] = np.std(filtered_data[column].values)
                     self.raw_values[image][name + ": " + tsv_key] = filtered_data[column].values
-                rows.append(row)
                 if not mt.next():
                     break
+            rows.append(row)
         return rows
     
     def raw_values_to_tsv(self, output_dir):
@@ -187,7 +190,7 @@ class CellsSignalAnalyzer(object):
             df = pd.DataFrame(all_data)
             filename = f"{image}.tsv"
             output_path = output_dir / filename
-            df.to_csv(output_path, sep="\t", index=False)
+            df.to_csv(output_path, sep=";", index=False)
 
     def process_thresholds(self):
         for name, properties in self.measurables.items():
@@ -206,7 +209,6 @@ class CellsSignalAnalyzer(object):
                 i2 = int(end * total) - 1
                 self.thresholds[key] = (buffer[i1], buffer[i2])
                 start = end
-        pprint(self.thresholds)
 
     def set_exclusions(self, classes_to_exclude):
         self.excluded = set(classes_to_exclude)
@@ -252,7 +254,7 @@ if __name__ == "__main__":
     analyzer.make_summary()
     analyzer.summary_stats.to_csv(
         "/home/clement/Documents/projects/2285-dbracquemond/pjt1/summary_output.tsv", 
-        sep="\t", 
+        sep=";", 
         index=False
     )
     analyzer.raw_values_to_tsv("/home/clement/Documents/projects/2285-dbracquemond/pjt1/raw_values")
